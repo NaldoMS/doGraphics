@@ -66,7 +66,7 @@ class InSteps extends React.Component {
   };
 
   finishButtonClick = result => {
-    console.log("En algún momento va a imprimir resultados");
+    console.log("Em algum momento vai imprimir os resultados");
   };
 
   showModels = () => this.setState({modelsOpen:!this.state.modelsOpen})
@@ -78,7 +78,7 @@ class InSteps extends React.Component {
     var steps = [
       // this step hasn't got a isValidated() function, so it will be considered to be true
       {
-        stepName: "Configuración del Modelo",
+        stepName: "Configuração do Modelo",
         component: Configuration,
         stepProps: {
           status: model,
@@ -93,7 +93,7 @@ class InSteps extends React.Component {
         }
       },
       {
-        stepName: "Detalles del Modelo",
+        stepName: "Detalhes do Modelo",
         component: Processing,
         stepProps: {
           status: model,
@@ -103,7 +103,7 @@ class InSteps extends React.Component {
         }
       },
       {
-        stepName: "Presentación de los Resultados",
+        stepName: "Apresentação dos Resultados",
         component: Presentation,
         stepProps: {
           status: model,
@@ -124,13 +124,13 @@ class InSteps extends React.Component {
           <Col xs={12} md={6} className="my-4 mx-auto">
             <ReactWizard
               steps={steps}
-              title="Programación Lineal"
+              title="Programação Linear"
               progressbar
               headerTextCenter
               validate
               color="blue"
-              previousButtonText="Volver"
-              nextButtonText="Siguiente"
+              previousButtonText="Voltar"
+              nextButtonText="Avançar"
               nextButtonClasses="bg-primary"
               finishButtonText="Imprimir Resultados"
               finishButtonClick={this.finishButtonClick}

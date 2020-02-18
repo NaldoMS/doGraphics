@@ -13,7 +13,7 @@ const Variable = props => {
         </InputGroupAddon>
         <Input
           name={xi}
-          placeholder="Descripcion de la Variable"
+          placeholder="Descrição da Variável"
           aria-label="Descripcion"
           aria-describedby="variable"
           onChange={handleChange}

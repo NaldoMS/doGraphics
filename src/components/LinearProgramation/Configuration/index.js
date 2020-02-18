@@ -20,9 +20,9 @@ class Configuration extends React.Component {
       this.setState({ faltaDescrip: "" });
       return true;
     } else if (variablesDescriptionsMin.length < 2) {
-      this.setState({ faltaDescrip: "Se necesitan como mínimo dos variables" });
+      this.setState({ faltaDescrip: "É necessário no mínimo duas variáveis." });
     } else if (restriccionesDescriptionsMin.length < 1) {
-      this.setState({ faltaDescrip: "Se necesita como mínimo una restricción" });
+      this.setState({ faltaDescrip: "É necessário no mínimo uma restrição." });
     }
     return false;
   }
@@ -81,37 +81,22 @@ class Configuration extends React.Component {
 
     return (
       <>
-        <h3>Comenzamos configurando nuestro modelo</h3>
+        <h3>Começamos configurando nosso modelo</h3>
         <Container>
           <Row>
             <Col>
               <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardInteger">
-                <PopoverBody>Esta función activa o desactiva la Programacion Lineal Entera.</PopoverBody>
+                <PopoverBody>Esta função ativa ou desativa a Programação Linear Inteira.</PopoverBody>
               </UncontrolledPopover>
               <Card outline color="secondary" id="CardInteger" className="mt-2 mx-auto">
-                <CardHeader>Programación entera</CardHeader>
+                <CardHeader>Programação Inteira</CardHeader>
                 <CardBody>
                   <Button
                     outline
                     color={this.props.status.integer ? "success" : "danger"}
                     onClick={() => this.props.toggleInteger()}
                   >
-                    {this.props.status.integer ? "Activa" : "Inactiva"}
-                  </Button>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col>
-              <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardModel">
-                <PopoverBody>
-                  En esta seccion usted podra almacenar en la base de datos los modelos deseados, realizando el registro con su cuenta de Google.
-                </PopoverBody>
-              </UncontrolledPopover>
-              <Card outline color="secondary" id="CardModel" className="mt-2 mx-auto">
-                <CardHeader>Gestion de Modelos</CardHeader>
-                <CardBody>
-                  <Button color="warning" outline onClick={this.showModels}>
-                    Modelos
+                    {this.props.status.integer ? "Ativa" : "Inativa"}
                   </Button>
                 </CardBody>
               </Card>
@@ -121,11 +106,11 @@ class Configuration extends React.Component {
             <Col>
               <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardUtil">
                 <PopoverBody>
-                  Aquí debes seleccionar el método de cálculo y visualización de los resultados.
+                  Aqui selecione o método de cálculo e visualização dos resultados.
                 </PopoverBody>
               </UncontrolledPopover>
               <Card outline color="secondary" id="CardUtil" className="mt-3 mx-auto">
-                <CardHeader>Método a utilizar</CardHeader>
+                <CardHeader>Método utilizado</CardHeader>
                 <CardBody>{buttonsMethods}</CardBody>
               </Card>
             </Col>
@@ -133,12 +118,12 @@ class Configuration extends React.Component {
             <Col>
               <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardOpt">
                 <PopoverBody>
-                  Y aquí el tipo de optimizacion que deseas realizar: si deseas maximizar o minimizar la
-                  función.
+                  E aqui o tipo de otimização que deseja: se deseja maximizar ou minimizar a
+                  função.
                 </PopoverBody>
               </UncontrolledPopover>
               <Card outline color="secondary" id="CardOpt" className="mt-3 mx-auto">
-                <CardHeader>Tipo de optimización</CardHeader>
+                <CardHeader>Tipo de otimização</CardHeader>
                 <CardBody>{buttonsOptType}</CardBody>
               </Card>
             </Col>
@@ -147,14 +132,13 @@ class Configuration extends React.Component {
             <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardVariables">
               <PopoverHeader>Variables</PopoverHeader>
               <PopoverBody>
-                Aquí debes ingresar las variables que formarán parte del modelo, las mismas son de carga
-                dinámica.
+                Aqui você deve informar as variáveis que farão parte do modelo, elas são de carregamento dinâmico.
               </PopoverBody>
             </UncontrolledPopover>
             <Card outline color="secondary" id="CardVariables" className="w-100 mt-3 mx-auto">
               <CardHeader>
                 <CardTitle className="text-left">
-                  <h4>Variables</h4>
+                  <h4>Variáveis</h4>
                 </CardTitle>
               </CardHeader>
               <CardBody><Variables method={method} handleVariables={this.handleVariables} variables={variables}/></CardBody>
@@ -162,16 +146,15 @@ class Configuration extends React.Component {
           </Row>
           <Row>
             <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardRestri">
-              <PopoverHeader>Restricciones</PopoverHeader>
+              <PopoverHeader>Restrições</PopoverHeader>
               <PopoverBody>
-                Aquí debes ingresar las restricciones que formarán parte del modelo, éstas también son de
-                carga dinámica.
+               Aqui você deve informar as restrições que farão parte do modelo, estas também são de carregamento dinâmico.
               </PopoverBody>
             </UncontrolledPopover>
             <Card outline color="secondary" id="CardRestri" className="w-100 mt-3 mx-auto">
               <CardHeader>
                 <CardTitle className="text-left">
-                  <h4>Restricciones</h4>
+                  <h4>Restrições</h4>
                 </CardTitle>
               </CardHeader>
               <CardBody><Restrictions handleRestrictions={this.handleRestrictions} restricciones={restricciones}/></CardBody>

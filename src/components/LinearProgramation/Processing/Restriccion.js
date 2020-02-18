@@ -38,7 +38,7 @@ const Restriccion = props => {
             <Input key={'Ci'+props.restriccion.ri+'r'+indx}
                 type="number"
                 name={indx}
-                placeholder="Coefiente"
+                placeholder="Coeficiente"
                 className="InputCoeficiente"
                 onChange={e => {props.handleCoefRes(e,props.restriccion.ri)}}
                 value={coeficiente}
