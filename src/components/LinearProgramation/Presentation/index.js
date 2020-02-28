@@ -123,9 +123,9 @@ class Presentation extends React.Component {
             <CardTitle>
               <h3>
                 {result.feasible
-                  ? result.bounded ? "El resultado óptimo de la función objetivo es: " + result.evaluation
-                    : "Solucion no Acotada"
-                  : "Solución no Factible" }
+                  ? result.bounded ? "O resultado ótimo da função objetivo é: " + result.evaluation
+                    : "Solução ilimitada"
+                  : "Solução não Factível" }
               </h3>
             </CardTitle>
           </CardHeader>

@@ -14,14 +14,14 @@ const Restriction = props => {
 
         <Input
           name={ri}
-          placeholder="Descripcion de la Restriccion"
+          placeholder="Descrição da Restrição"
           aria-label="Descripcion"
           aria-describedby="restriccion"
           onChange={handleChange}
           value={descripcion}/>
 
         <UncontrolledPopover flip={false} trigger="focus hover" placement="auto" target={"TTR" + ri}>
-          <PopoverBody>Aquí debes ingresar qué representa la restricción en el modelo.</PopoverBody>
+          <PopoverBody>Aqui você deve inserir o que a restrição representa no modelo.</PopoverBody>
         </UncontrolledPopover>
 
       </InputGroup>)

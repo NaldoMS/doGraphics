@@ -3,9 +3,9 @@ import {Button,InputGroupText,Card,CardBody,CardHeader,CardTitle ,InputGroup, In
 
 const Restriccion = props => {
     let {coeficientes} = props.restriccion;
-    //Verificamos la cantidad de coeficientes dependiendo de la cantidad de variables.
+    //Verificamos a quantidade de coeficientes, dependendo da quantidade de variáveis
     if (coeficientes.length !== props.cantVariables) {
-        //Diferencia de entre las variables y los coeficientes de las restricciones. 
+        //Diferença entre as variáveis ​​e os coeficientes das restrições. 
         let diferencia = props.cantVariables - coeficientes.length;
         if ( diferencia > 0 ) {
             for (let index = 0; index < diferencia; index++) {

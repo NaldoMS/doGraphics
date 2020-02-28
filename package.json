@@ -1,8 +1,8 @@
 {
-  "name": "optimizer-pl-io",
+  "name": "dographics",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://santinozaracho.github.io/optimizer-pl-io",
+  "homepage": "https://www.dographics.com.br",
   "dependencies": {
     "algebra.js": "^0.2.6",
     "bootstrap": "^4.3.1",

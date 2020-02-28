@@ -9,22 +9,22 @@ const Restrictions = props => {
         restricciones.splice(ri, 1)
         restricciones.forEach( (restri,index) => restri.ri = index )
     }
-    //Función que se encarga de manejar las modificaciones de restricciones.
+    //Função que lida com modificações de restrições.
     const handleChangeRes = (ri,desc) => {
-        //Si el cambio es dejarla vacia entonces eliminamos la restriccion Sino, Almacenamos el valor
+        //Se a mudança é para deixá-lo vazio, eliminamos a restrição. Mas, armazenamos o valor
         if (desc === '') { deleteRes(ri) }else{ restricciones[ri].descripcion = desc }
-        //pedimos al padre que almacene los cambios
+        //pedimos ao pai para guardar as alterações
         props.handleRestrictions(restricciones);
-        //Llamamos a generar si corresponde nueva restriccion
+        //Chamamos para gerar novas restrições
         handleNewRes();
     };
-    //Función que se encarga de Añadir una restriccion si es necesario.
+    //Função responsável por adicionar uma restrição, se necessário.
     const handleNewRes = () => {
-        //Agregamos Tope de Restricciones
+        //Limitando restrições
         if(restricciones.length < 30 ){
-        //Contador de Rescciones sin descripciones.
+        //Contador de restrições sem desfrições.
         let counterWitheRes = restricciones.filter(element => element.descripcion.length === 0).length;
-        //Si el contador de restricciones vacias es igual a 0 entonces agregamos una restriccion mas.
+        //Se o contador de restrições vazias é igual a 0 então adicionamos mais uma restrição.
             if (counterWitheRes === 0) {
             restricciones.push({
                 ri: restricciones.length,

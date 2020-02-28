@@ -3,7 +3,7 @@ import Variable from './Variable';
 
 const Variables = props => {
     let { variables,method } = props
-        //Función que se encarga de manejar las modificaciones en las variables.
+        //Função que lida com mudanças nas variáveis.
         const deleteVar = xi => {
             if (variables.length > 2){
                 variables.splice(xi, 1)
@@ -12,14 +12,14 @@ const Variables = props => {
                 variables[xi].descripcion = ''
             }
         }
-        //Función que se encarga de manejar las modificaciones de restricciones.
+        //Função responsável por manipular as modificações das restrições.
         const handleChangesVar = (xi,desc) => {
-            //Si el cambio es dejarla vacia entonces eliminamos la restriccion Sino, Almacenamos el valor
+            //Se a mudança é para deixá-lo vazio, eliminamos a restrição. Mas, armazenamos o valor
             if (desc === '') { deleteVar(xi) }else{ variables[xi].descripcion = desc }
-            //pedimos al padre que almacene los cambios
+            //pedimos ao pai para guardar as alterações
             props.handleVariables(variables);
         };
-        //Función que se encarga de Añadir una Variable si es necesario.
+        //Função responsável por adicionar uma variável, se necessário.
     const handleNewsVar = () => {
         if (method === "simplex") {
             if( variables.length < 20 ){

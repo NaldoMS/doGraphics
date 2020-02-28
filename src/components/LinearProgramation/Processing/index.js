@@ -11,7 +11,7 @@ class Processing extends React.Component {
   }
 
   isValidated() {
-    //Verificando se os coeficientes das variables y das restrições não são nulos
+    //Verificando se os coeficientes das variables e das restrições não são nulos
     let verifQty = this.props.status.variables
       .filter(va => va.descripcion !== "")
       .every(va => va.coeficiente !== "");
