@@ -27,21 +27,21 @@ class GraphicPresentation extends React.Component{
 
     updateState = () =>{
         let {variables,restricciones,result} = this.props
-        //Filtramos las restricciones y variables que no fueron filtradas antes.
+        //Filttramos as restrições e variáveis que não foram filtradas antes.
         restricciones = restricciones.filter(elem => elem.descripcion!=='');
         variables = variables.filter(elem => elem.descripcion!=='');
-        //Obtenemos los coeficientes a evaluar en el Z
+        //Obtemos os coeficientes a avaliar em Z
         let coefToValueZ = this.getCoeficientesToEv(variables)
-        //Obtenemos la paleta de colores.
+        //Obtemos a paleta de cores.
         let referencias = this.getColorList(restricciones);
-        //Obtenemos las Lineas y las Expresiones
+        //Obtemos as linhas e as Expressões
         let {lines,expresiones,highestValueX,highestValueY} = this.getLinesAndExpressions(restricciones);
-        //Obtenemos los Puntos de marca general
+        //Obtemos os pontos de marca geral
         let {points,convexPoints} = this.getPoints(restricciones,expresiones,result,highestValueX,highestValueY)    
-        //Obtenemos el Punto Optimo
+        //Obtemos o Ponto ótimo
         let optimMark = []
         if( Object.entries(result).length ){ optimMark = [this.getOptimPoint(result)]}
-        //Obtenemos la Recta del Funcional.
+        //Obtemos la Recta del Funcional.
         // console.log('Maximos X:'+highestValueX+', Y:e'+highestValueY);
         let lineFunctional = this.getObjectiveFunctionLine(variables,optimMark[0],highestValueX,highestValueY);
         // console.log(lineFunctional);

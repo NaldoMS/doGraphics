@@ -8,11 +8,11 @@ class SimplexPresentation extends React.Component{
         this.state={details:false}
     }
 
-    //Funcion que en base al uso de una variable, devuelve una tabla con los recursos utilizados
+    //Função que, com base no uso de uma variável, retorna uma tabela com os recursos utilizados
     tablaDeRecursosFoot = (cantUsoVar,variableId) => {
         let {restricciones} = this.props;
         let tableBody = restricciones.filter(item => item.descripcion!== '')
-        //Realizamos calculos
+        //Realizamos os cálculos
         .map( restri => 
             <tr key={'TdeV'+variableId+'R'+restri.ri}><td>{'R'+restri.ri}</td><td>{cantUsoVar*restri.coeficientes[variableId]}</td>
             <td>{restri.derecha-(cantUsoVar*restri.coeficientes[variableId])}</td></tr>)
@@ -24,42 +24,42 @@ class SimplexPresentation extends React.Component{
     }
 
     mapperAnalisisTable = (result) => {
-        //El array al cucal enviamos los resultados procesados
+        //A matriz para qual enviamos os resultados processados
         let tableResult=[];
-        //Obtenemos el Set de Resultados con Formato [key,value]
+        //Obtemos o conjunto de resultados com o formato [key,value]
         let resultSetArray =  Object.entries(result.solutionSet);
-        //Obtenemos la matriz del simplex reducida
+        //Obtemos a matriz simplex reduzida
         let matrix = result._tableau.matrix;
-        //Obtenemos los indices de cada columna
+        //Obtemos os índices de cada coluna
         let indexByCol = result._tableau.varIndexByCol;
-        //Obtenemos la Lista de Variables Slack y Reales
+        //Obtemos a lista de variáveis de folgas e reais
         let variablesList = result._tableau.variablesPerIndex
-        //Obtenemos la Lista de Variables Reales
+        //Obtemos a lista de variáveis Reais
         let variablesRealesList = result._tableau.variablesPerIndex.filter(el => !el.isSlack);
-        //Contamos la Cantidad de elementos en la fila de resultados (van a ser cero por ser simplex reducido)
+        //Contamos a quantidade de elementos na linha de resultados (eles serão zero porque são simplex reduzidos)
         let itemsinCero = matrix[0].length - 1;
-        //Obtenemos cuales son las variables que no estan en el set de resultados (van a ser cero)
+        //Obtemos quais são as variáveis ​​que não estão no conjunto de resultados (elas serão zero)
         let varsEnCero = variablesRealesList.filter( vari => !Object.keys(result.solutionSet).includes(vari.id) )
-        //La cantidad de columnas en la fila de resultados - la cantidad de variables nulas, me devuelven la cantidad de slacks
+        //O número de colunas na linha de resultado - o número de variáveis ​​nulas, elas retornam a quantidade de folgas
         let slacksEnCero = itemsinCero - varsEnCero.length;
 
-        //Procesamos INFO
+        //Processamos a INFO
 
-        //Primer elemento de la Tabla, el Optimo.
+        //Primeiro elemento da tabela, o ótimo.
         tableResult.push({name:'Optimo',item:'',value:result.evaluation});
-        //Procesamos todos los elementos a producir (result Set)
+        //Processamos todos os elementos a serem produzidos (conjunto de resultados)
         resultSetArray.forEach( ([key,value]) => tableResult.push({name:'Producir',item:'X'+key, value}) )
-        //Procesamos el uso de los recursos, es decir, los elementos extras de la Fila de Resultados(Matriz)
+        //Processamos o uso de recursos, ou seja, os elementos extras da Linha de Resultados (Matriz)
         if (resultSetArray.length < matrix.length-1) {
             console.log('hola');
         }
 
-        //Procesamos los Costo de Oportunidad y los Valores Marginales
+        //Processamos os custos de oportunidade e os valores marginais
         matrix[0].slice(1)
                 .forEach( (col,indCol) => {
-                    //Creamos un nuevo item.
+                    //Criamos um novo item.
                     let item= {name:'',item:'',value:''};
-                    //Verificamos si es Slack o Variable Real
+                    //Verificamos se é Variável de folga ou Variável Real
                     if (variablesList[indexByCol[indCol+1]].isSlack){
                         item.name = 'Valor Marginal';
                         item.item = 'R'+indexByCol[indCol+1];
@@ -70,7 +70,7 @@ class SimplexPresentation extends React.Component{
                         item.value = Math.abs(col);
                     }
                     
-                    //Empujamos el item a la tabla de resultados
+                    //Colocamos o item na tabela de resultados
                     tableResult.push(item)})
             
         return tableResult
@@ -80,40 +80,40 @@ class SimplexPresentation extends React.Component{
                                                     .filter(vari => vari.descripcion !== '')
                                                     .map( vari => 
                                                                 <Card key={'C-V-'+vari.xi} outline color='secondary' className="w-100 mt-3 mx-auto">
-                                                                    <CardHeader><CardTitle>{'Variable: X'+vari.xi}</CardTitle></CardHeader>    
+                                                                    <CardHeader><CardTitle>{'Variável: X'+vari.xi}</CardTitle></CardHeader>    
                                                                     <CardBody>
                                                                         <Row><CardText>{
                                                                             result.solutionSet[vari.xi] ? 
-                                                                            'Se recomienda producir '+result.solutionSet[vari.xi]+' unidades':
-                                                                            'No se recomienda la produccion'}
+                                                                            'Se recomenda produzir '+result.solutionSet[vari.xi]+' unidades':
+                                                                            'Não recomendamos a produção'}
                                                                             {' de '+vari.descripcion}</CardText>
                                                                         </Row>
                                                                         <Row></Row> 
                                                             
                                                                     </CardBody>
                                                                     <CardFooter>
-                                                                        <CardText>Tabla de Recursos:</CardText>
+                                                                        <CardText>Tabela de Recursos:</CardText>
                                                                         {result.solutionSet[vari.xi] ? 
-                                                                        this.tablaDeRecursosFoot(result.solutionSet[vari.xi],vari.xi):'Sin Consumo de Recursos'}
+                                                                        this.tablaDeRecursosFoot(result.solutionSet[vari.xi],vari.xi):'Sem Consumo de Recursos'}
                                                                     </CardFooter>
 
                                                                 </Card>)
 
 
     render () {
-        //Obtenemos el resultado almacenado
-        //Obtenemos las Variables desde las props
+        //Obtemos o resultado obtido
+        //Obtemos as variáves do PROPS
         let {variables, restricciones,result} = this.props;
         
     
-        //Obtenemos  la informacion para la tabla de Analisis
+        //Obtemos a informação para a tabela de análises
         let itemsTabAnalisis = this.mapperAnalisisTable(result);     
-        //Renderizamos el Tablero de analisis
+        //Renderizamos a tabela de análises
         let elementosTabAnalisis = itemsTabAnalisis.map( (item, index) => <tr key={'T-A-'+index}><td>{item.name}</td><td>{item.item}</td><td>{item.value}</td></tr>);
         // 
         let resultAnalisisCard = 
                         <Card outline color='secondary' className="w-100 mt-3 mx-auto">
-                            <CardHeader><CardTitle><h4>Tablero de Analisis</h4></CardTitle></CardHeader>
+                            <CardHeader><CardTitle><h4>Tabela de Análises</h4></CardTitle></CardHeader>
                             <CardBody>
                                 <Table>
                                     <thead><tr><th></th><th>Elemento</th><th>Valor</th></tr></thead>
@@ -127,10 +127,10 @@ class SimplexPresentation extends React.Component{
         let resultDetalleCard = <Card outline color='secondary' className="w-100 mt-3 mx-auto">
                                 <CardHeader>
                                     <Row>
-                                        <Col className="text-left"><CardTitle><h5>Detalle de Variables Y Recursos:</h5></CardTitle></Col>
+                                        <Col className="text-left"><CardTitle><h5>Detalhe das Variáveis e Recursos:</h5></CardTitle></Col>
                                         <Col><Button outline size='sm'
                                             onClick={() => this.setState({details:!this.state.details})} 
-                                            color={!this.state.details ? 'success':'danger'}>{!this.state.details ? 'Ver Detalles':'Ocultar Detalles'}</Button>
+                                            color={!this.state.details ? 'success':'danger'}>{!this.state.details ? 'Ver Detalhes':'Ocultar Detalhes'}</Button>
                                         </Col>
                                     </Row>
                                 </CardHeader>

@@ -5,30 +5,30 @@ import SimplexPresentation from "./SimplexPresentation";
 import GraphicPresentation from "./GraphicPresentation";
 
 let convertAppToModelForSolverPrimal = datosApp => {
-  //Obtenemos los Datos de la aplicacion
+  //Obtemos os dados da aplicação
   let { restricciones, variables, objective, integer } = datosApp;
   variables = variables.filter(item => item.descripcion !== "");
   restricciones = restricciones.filter(item => item.descripcion !== "");
-  //Precargamos el Modelo
+  //Pré carregamos o modelo
   let model = { optimize: "coeficiente", opType: "", constraints: {}, variables: {}, ints: {} };
 
-  //Tratamos el objetivo
+  //Tratamos o objetivo
   model.opType = objective;
 
-  //Verificamos si se desea PL Entera
+  //Verificamos se é um PL inteiro
   if (integer) {
     variables.forEach(vari => (model.ints[vari.xi] = 1));
   }
-  //Tratamos las Variables
+  //Tratamos as variáveis
   variables.forEach(vari => {
-    //Generamos una nueva Variable
+    //Geramos uma nova variável
     let newVari = {};
     newVari.coeficiente = vari.coeficiente;
     restricciones.forEach(restri => (newVari["r" + restri.ri] = restri.coeficientes[vari.xi]));
     // console.log(newVari);
     model.variables[vari.xi] = newVari;
   });
-  //Tratamos las Restricciones
+  //Tratamos as restrições
   restricciones.forEach(restri => {
     if (restri.eq === ">=") {
       let res = {};
@@ -72,11 +72,11 @@ class Presentation extends React.Component {
     }
   }
 
-   //Funcion que Valida si es posible operar con los datos ingresados
+   //Função que valida se é possível operar com os dados inseridos
    validateCoeficientes = props => {
     console.log('Validando..');
     let {variables, restricciones } = props.status;
-    //Verificando si los coeficientes de las variables y las restricciones no son nulos
+    //Verificando se os coeficientes das variáveis e das restrições não são nulos
     let varsOperatives = variables.filter(va => va.descripcion !== "");
     let verifQty = varsOperatives.length ? varsOperatives.every(va => va.coeficiente !== "") : false; 
     let restOperatives = restricciones.filter(re => re.descripcion !== "");
@@ -84,23 +84,23 @@ class Presentation extends React.Component {
     return (verifQty && veriResQty) ? true : false;
   };
 
-  //Funcion de Calculo del modelo.
+  //Função do cálculo do modelo
   calculateResults = () => {
     console.log('Calculating..');  
-    //Convertimos la App en Modelo para Solver.js
+    //Convertemos o problema para o modelo do Solver.JS
     let model = convertAppToModelForSolverPrimal(this.props.status);
 
-    //solver.js soluciona y nos devuelve
+    //solver.js soluciona e nos devolve
     return solver.Solve(model, false, true);
   };
 
   render() {
-    //Obtenemos el resultado almacenado
+    //Obtemos o resultado fornecido
     let { result } = this.state;
     let printResults;
     console.log('Factible?:'+result.feasible);
     if ( result.feasible ) {
-      //Obtenemos las Variables desde las props
+      //Obtemos as variáveis do props
       let { variables, restricciones, method } = this.props.status;
       if (method === "simplex") {
         if (result.bounded) {
