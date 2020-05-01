@@ -23,15 +23,15 @@ const FuncionObj = props => {
                         value={vari.coeficiente}
                         />
             <InputGroupAddon key={'ADDIF'+index} addonType="append">
-                <InputGroupText key={'IFD'+index}>{"X"+vari.xi}</InputGroupText>
+                <InputGroupText key={'IFD'+index}>{"X"+(vari.xi+1)}</InputGroupText>
             </InputGroupAddon>
             {index < variables.filter(vari => vari.descripcion !== '').length-1 && <InputGroupText key={'+IF'+index}>+</InputGroupText>}
         </React.Fragment>) 
 
     return(
             <InputGroup key={'INPUTFUNCIONAL'}>
-                {variablesToFunction}
                 <InputGroupText className='mx-1' key='IFOPT'>{' => '+props.objective.toUpperCase()}</InputGroupText>
+                {variablesToFunction}
             </InputGroup>
     
     ) 

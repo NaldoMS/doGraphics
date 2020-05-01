@@ -41,13 +41,11 @@ class GraphicPresentation extends React.Component{
         //Obtemos o Ponto ótimo
         let optimMark = []
         if( Object.entries(result).length ){ optimMark = [this.getOptimPoint(result)]}
-        //Obtemos la Recta del Funcional.
-        // console.log('Maximos X:'+highestValueX+', Y:e'+highestValueY);
+        //Obtemos a Reta da função.
         let lineFunctional = this.getObjectiveFunctionLine(variables,optimMark[0],highestValueX,highestValueY);
-        // console.log(lineFunctional);
-        //Obtenemos la Tabla de resultados.
+        //Obtemos a tabela de resultados.
         let tableResult = this.getTableResult(optimMark.concat(points),coefToValueZ,restricciones)
-        //Almacenamos el Estado.
+        //Armazenamos o Estado.
         this.setState({referencias,lines,points,optimMark,convexPoints,lineFunctional,tableResult});
     }
 
@@ -61,12 +59,11 @@ class GraphicPresentation extends React.Component{
 
     getLinesAndExpressions = restricciones => {
         const getFrac = real => new Fraction(Math.pow(10,(real - real.toFixed()).toString().length - 2)*real, Math.pow(10,(real - real.toFixed()).toString().length - 2)) 
-        //Tipos de Expresiones: 0: Constante en X; 1: Constante en Y; 2: Recta con pendiente.
+        //Tipos de espressões: 0: Constante em X; 1: Constante em Y; 2: Reta com pendente.
         let expresiones = [];
         let arrayDeRestriccionesConLosDosCoef =  restricciones.filter(el=> ( el.coeficientes[0] > 0 && el.coeficientes[1] > 0) )
         let highestValueY = Math.max.apply(Math,arrayDeRestriccionesConLosDosCoef.map( restri => (restri.derecha / restri.coeficientes[1])));
         let highestValueX = Math.max.apply(Math,arrayDeRestriccionesConLosDosCoef.map( restri => (restri.derecha / restri.coeficientes[0])));
-        // console.log('Ymax: '+highestValueY+' Xmax:'+highestValueX);
         
         let lines = restricciones.map( restri => {
       
@@ -75,7 +72,7 @@ class GraphicPresentation extends React.Component{
 
             let yNum = !Number.isInteger(Number(restri.coeficientes[1])) ? getFrac(Number(restri.coeficientes[1])):Number(restri.coeficientes[1]);
  
-            //Si posee ambos coeficientes entoces es una recta con pendiente.
+            //Se possue ambos coeficientes então é uma reta com pendente.
             if ( xNum !== 0  &&  yNum!== 0) {
                 let x = new Expression('x').multiply(xNum);
                 let y = new Expression('y').multiply(yNum);
@@ -84,9 +81,9 @@ class GraphicPresentation extends React.Component{
                 expresiones.push({restriEquation,tipo:2})
                 let yEqu = (new Equation(restriEquation.solveFor('x'),0)).solveFor('y');
                 let xEqu = (new Equation(restriEquation.solveFor('y'),0)).solveFor('x');
-                //Analizamos pendientes positivas y negativas
+                //Analisamos pendentes positivas e negativas
                 if (xEqu >= 0 && yEqu >= 0) {
-                    //Si es Pendiente negativa tenemos que corta en los puntos +x y +y
+                    //Se é Pendente negativa temos que cortar nos pontos +x y +y
                     if (restri.eq === '>=') {
                         return([{x:0,y:yEqu,y0:highestValueY},{x:xEqu,y:0,y0:highestValueY},{x:highestValueX,y:0,y0:highestValueY}])
                     }else{
@@ -94,44 +91,39 @@ class GraphicPresentation extends React.Component{
                     }
                     
                 }else{
-                    //Si es Pendiente positiva solo corta en +x o en +y
+                    //Se é pendente positiva corta apenas em +x ou em +y
                     if(yEqu >= 0){
-                        //Si corta en +y , entonces calculamos el punto para el grafico en +x
+                        //Se corta em +y , então calculamos o punto para o grafico em +x
                         let relation = Math.abs(yEqu/xEqu)
                         let valY = yEqu+highestValueX*relation
-                        //Si el valor calculado para Y es menor al maximo, lo llevamos hasta alli y actualizamos el Xmax
+                        //Se o valor calculado para Y for menor que o máximo, nós o levamos para lá e atualizamos o Xmax
                         if (valY < highestValueY){
                             valY = highestValueY
                             highestValueX = (highestValueY-yEqu)/relation
-                            // console.log('NewXMAX: '+highestValueX);
                         }else{
                             highestValueY = valY            
-                            // console.log('NewYMAX: '+highestValueY);
                         }
                         return([{x:0,y:yEqu},{x:highestValueX,y:valY}])
                     }else{
                         if (xEqu >= 0) {
-                            //Si corta en +x , entonces calculamos el punto para el grafico en +y
+                            //Se cortar em + x, calcularemos o ponto do gráfico em + 
                             let relation = Math.abs(xEqu/yEqu)
                             let valX = xEqu+highestValueY*relation
-                            //Si el valor calculado para Y es menor al maximo, lo llevamos hasta alli y actualizamos el YMax
+                            //Se o valor calculado para Y for menor que o máximo, levaremos para lá e atualizaremos o YMax
                             if (valX < highestValueX){
                                 valX = highestValueX
                                 highestValueY = (highestValueX-xEqu)/relation
-                                // console.log('NewYMAX: '+highestValueY);
                             }else{
                                 highestValueX = valX
-                                // console.log('NewXMAX: '+highestValueX);
                             }
-                            // console.log(xEqu+' '+yEqu);
                             return([{x:xEqu,y:0},{x:valX,y:highestValueY}])
                         }
                     }
                 }
             }else {
-                //Sino, es una constante.
+                //Caso contrário, é uma constante.
                 if (xNum !== 0) {
-                    //Constante en X
+                    //Constante em X
                     let x = new Expression('x').multiply(xNum);
                     let restriEquation = new Equation(x,restri.derecha)
                     expresiones.push({restriEquation,tipo:0})
@@ -140,7 +132,7 @@ class GraphicPresentation extends React.Component{
                         return([{x:xEqu,y:0},{x:xEqu,y:highestValueY}])
                     }
                 }else {
-                    //Constante en Y
+                    //Constante em Y
                     let y = new Expression('y').multiply(yNum);
                     let restriEquation = new Equation(y,restri.derecha)
                     expresiones.push({restriEquation,tipo:1})
@@ -151,7 +143,6 @@ class GraphicPresentation extends React.Component{
                 } 
             }
         })
-        // console.log('MAXS:'+highestValueX+'y:'+highestValueY);
         
         return { lines,expresiones,highestValueX,highestValueY }
     }
@@ -159,16 +150,16 @@ class GraphicPresentation extends React.Component{
     getColorList = restricciones => restricciones.map( restri => Object({title: 'R'+restri.ri+' Tipo:'+restri.eq, color: randomColor({hue: 'random',luminosity: 'ligth'})}))
 
     getOptimPoint = solSet => {
-        console.log('Generating Optim Point');
-        //Analizamos el Punto Optimo.
-        if ( solSet['0'] && solSet['1'] ) {return{x:Number(solSet['0']).toFixed(2),y:Number(solSet['1']).toFixed(2),P:'0 - OPTIMO'}
-        }else if ( solSet['0'] ) {return{x:Number(solSet['0']).toFixed(2),y:(0).toFixed(2),P:'0 - OPTIMO'}
-        }else { return{x:(0).toFixed(2),y:Number(solSet['1']).toFixed(2),P:'0 - OPTIMO'}}
+        console.log('Gerando o ponto ótimo');
+        //Analisamos o Ponto ótimo.
+        if ( solSet['0'] && solSet['1'] ) {return{x:Number(solSet['0']).toFixed(2),y:Number(solSet['1']).toFixed(2),P:'0 - ÓTIMO'}
+        }else if ( solSet['0'] ) {return{x:Number(solSet['0']).toFixed(2),y:(0).toFixed(2),P:'0 - ÓTIMO'}
+        }else { return{x:(0).toFixed(2),y:Number(solSet['1']).toFixed(2),P:'0 - ÓTIMO'}}
     }
 
     getObjectiveFunctionLine = (variables,optimPoint,xMax,yMax) => {
-        console.log('Getting OF Line');
-        //Funcion que devuelve una Fraccion de Algebra.js a partir de un numero real.
+        console.log('Obtendo a linha');
+        //Função que devolve uma Fração de Algebra.js a partir de um numero real.
         const getFrac = real => new Fraction(Math.pow(10,(real - real.toFixed()).toString().length - 2)*real, Math.pow(10,(real - real.toFixed()).toString().length - 2)) 
         if (optimPoint){
             try {
@@ -187,12 +178,8 @@ class GraphicPresentation extends React.Component{
 
                     let yEqu = (new Equation(expFunObj.solveFor('x'),0)).solveFor('y');
         
-                    //Analizamos pendientes positivas y negativas
-                    // console.log('Result Y: '+yEqu.toString());
-                    // console.log('yMax: '+yMax);
-                    // console.log('Result X: '+xEqu.toString());
-                    // console.log('xMax: '+xMax);
-                    //Analizamos los Puntos
+                    //Analisamos pendentes positivas e negativas
+                    //Analisamos os pontos
                     if (xEqu >= 0 && yEqu >=0){
                         
                             if (xEqu > xMax && yEqu > yMax) {
@@ -213,10 +200,8 @@ class GraphicPresentation extends React.Component{
                                     return [{x:xEqu,y:0},{x:xVal,y:yMax}]
                                 }
                     }else if ( xEqu < 0 && yEqu < 0 ) {
-                        // console.log('Los dos Neg');
                         return [{x:xEqu,y:0},{x:0,y:yEqu}]
                     }else if ( xEqu >= 0 ) {
-                        // console.log('Solo xEqu pos');
                         if (xEqu > xMax){
                             let yRelation = (xEqu/yEqu)
                             let yVal = yEqu - xMax/yRelation
@@ -225,38 +210,33 @@ class GraphicPresentation extends React.Component{
                             let xRelation = (yEqu/xEqu)
                             let xVal = xEqu - yMax/xRelation
                             if (xVal > xMax){
-                                // console.log('Caso XVal > xMax');
                                 
                                 let xRelation = Math.abs(yEqu/xEqu)
                                 let yVal = xMax*xRelation + yEqu
                                 return [{x:xEqu,y:0},{x:xMax,y:yVal}]
-                            }else{
-                                // console.log('Caso Comun');            
+                            }else{            
                                 return [{x:xEqu,y:0},{x:xVal,y:yMax}]
                             }    
                         }
                     }else{
-                        // console.log('Solo yEqu pos')
                         if (yEqu > yMax){
-                            console.log('Caso pendiente de desarrollo, Que hacemos? damos mas altura para mostrar la recta?');
+                            console.log('Caso esteja pendente de desenvolvimento, o que fazemos? Damos mais altura para mostrar a linha?');
                             return []
                         }else{
                             let yRelation = Math.abs(yEqu/xEqu)
                             let xVal = yRelation * (yMax - yEqu)
                             if (xVal > xMax){
-                                console.log('Caso PENDIENTE DE VERIFICACION XVal > xMAx');
+                                console.log('Caso pendente de Verificação XVal > xMAx');
                                 let xRelation = Math.abs(xEqu/yEqu)
                                 let yVal = xMax*xRelation + yEqu
                                 return [{x:xEqu,y:0},{x:xMax,y:yVal}]
-                            }else{
-                                // console.log('Caso Comun');            
+                            }else{      
                                 return [{x:0,y:yEqu},{x:xVal,y:yMax}]
                             }    
                         }
                     }
                 }else if( variables[0].coeficiente !== 0) {
-                    // console.log('Sin puendiente, Constante en X'); 
-                    //Constante en X
+                    //Constante em X
                     
                     let xPoint = !Number.isInteger(Number(optimPoint.x)) ? getFrac(Number(optimPoint.x)):Number(optimPoint.x);
                     let xExp = new Expression('x').subtract(xPoint).multiply(variables[0].coeficiente);   
@@ -266,9 +246,7 @@ class GraphicPresentation extends React.Component{
                         return([{x:xEqu,y:0},{x:xEqu,y:yMax}])
                     }     
                 }else{
-
-                    // console.log('Sin pendiente, Constante en Y');
-                    //Constante en Y
+                    //Constante em Y
                     let yPoint = !Number.isInteger(Number(optimPoint.y)) ? getFrac(Number(optimPoint.y)):Number(optimPoint.y);
                     let yExp = new Expression('y').subtract(yPoint).multiply(variables[1].coeficiente);
                     let yEqu = (new Equation(yExp,0)).solveFor('y');
@@ -286,27 +264,27 @@ class GraphicPresentation extends React.Component{
     }
 
     getPoints = (restricciones,expresiones,solSet,xMax,yMax) => {
-        console.log('Getting Points');
-        //Definimos las Funciones necesarias para el buen funcionamiento de esta Funcion.
+        console.log('Conseguindo os pontos');
+        //Definimos as funções necessárias para o bom funcionamento dessa função.
 
         const getAreaPointsForConvex = points => {
-            //Funcion que calcula el Angulo entre dos puntos.
+            //Função que calcula o ângulo entre dois pontos.
             const calcAng = (point,p) => Math.atan2(point.y - p.y, point.x - p.x) * 180 / Math.PI + 180;
-            //Precargamos puntos que podrian definir el convexo.
+            //Nós pré-carregamos pontos que podem definir o convexo.
             let possiblePoints = [{x:0,y:0},{x:xMax,y:yMax},{x:Number(points[0].x),y:0},{x:0,y:Number(points[0].y)},{x:xMax,y:Number(points[0].y)},{x:Number(points[0].x),y:xMax}]            
-            //Obtenemos la lista de puntos
+            //Obtemos a lista de pontos
             let pointsList = [...points];
-            //Verificamos puntos que podrian definir el convexo.
+            //Verificamos os pontos que poderíam definir o convexo.
             possiblePoints.forEach( p => (verifyPoint(p,restricciones,points)) && pointsList.push(p) ) 
-            //Nos aseguramos de tomar el punto que este en el extremo derecho.
+            //Asseguramo-nos de que estamos no ponto mais à direita.
             pointsList.sort((a,b) => a.x<b.x ? 1:-1);
-            //Creamos nuestra Output
+            //Criamos nossa saída
             let orderedPoints = [];
             let point = pointsList[0];
             orderedPoints.push(point)
             pointsList.splice(0,1) 
             while ( pointsList.length ) {
-                //Encuentra el punto que tiene el angulo minimo
+                //Encontra o ponto que tem o angulo mínimo
                 let minAngle = pointsList.reduce( (min,p) => calcAng(point,p) < min ? calcAng(point,p) : min, 361);
                 if (minAngle < 361) {
                     let indNewPoint = pointsList.findIndex(p => calcAng(point,p) === minAngle);
@@ -314,14 +292,14 @@ class GraphicPresentation extends React.Component{
                     orderedPoints.push(point)
                     pointsList.splice(indNewPoint,1)           
                 } else { 
-                    console.log('Cant find any Angle');
+                    console.log('Nenhum angulo encontrado');
                     break}
             }
             orderedPoints.push(orderedPoints[0])
             return orderedPoints
         }
         
-        //Funcion que se encarga de realizar las verificaciones correspondientes para agregar un punto o no.
+        //Função responsável pela realização das verificações correspondentes para adicionar ou não um ponto.
         const verifyPoint = (point, restricciones, points) => {
             if (point.x >= 0 && point.y >= 0 ){
                 if ( !verifyPointInPoints(point,points) ) {
@@ -330,41 +308,39 @@ class GraphicPresentation extends React.Component{
             }else return false
         }
 
-        //Funcion que se encarga de Verificar si un punto ya se encuentra en la lista de puntos (o ya fue verificado antes).
+        //Função encarregada de verificar se um ponto já está na lista de pontos (ou já foi verificado antes).
         const verifyPointInPoints = (point,points) => points.some( pointL => (pointL.x === point.x.toFixed(2) && pointL.y === point.y.toFixed(2)) )
         
-        //Funcion que se encarga de verificar que un punto cumpla con todas las Restricciones.
+        //Função encarregada de verificar se um ponto está em conformidade com todas as restrições.
         const verifyPointInRestrictions = (point,restricciones) => restricciones.every( restri => {
                     let calIzq = (restri.coeficientes[0]*point.x + restri.coeficientes[1]*point.y);
                     if( restri.eq === '>=' ) {
-                        // console.log('P:('+point.x +','+point.y+') :'+calIzq+' >='+ restri.derecha );                        
                         return ( calIzq >= restri.derecha ) 
                     }else { 
-                        // console.log('P:('+point.x +','+point.y+') :'+calIzq+' <='+ restri.derecha );                        
                         return ( calIzq <= restri.derecha )} 
                 })
-        // Funcion que devuelve un punto verificado y que corta en un Eje.
+        //Função que retorna um ponto verificado e corta um eixo.
         const getPointAxFromExpCenX = ( exp ) => {       
-            //Obtenemos el Corte sobre el Eje-Y
+            //Obtemos o Corte sobre o eixo-Y
             let expResultX = Number((new Equation(exp.solveFor('y'),0)).solveFor('x'));
             if ( expResultX >= 0 ) {
-                //Generamos el Punto en X
+                //Geramos o Ponto em X
                 let point = {x:expResultX,y:0,P:points.length}
-                //Verificamos el punto en X con las Restricciones.
+                //Verificamos o ponto em X com as restrições.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
                     return point} 
             }
         };
-        // Funcion que devuelve un punto verificado y que corta en un Eje.
+        //Função que retorna um ponto verificado e corta um eixo.
         const getPointAxFromExpCenY = ( exp ) => {       
-            //Obtenemos el Corte sobre el Eje-Y
+            //Obtemos o Corte sobre o eixo-Y
             let expResultY = Number((new Equation(exp.solveFor('x'),0)).solveFor('y'));
             if ( expResultY >= 0 ) {
-                //Generamos el Punto en Y
+                //Geramos o Ponto em Y
                 let point = {x:0,y:expResultY,P:points.length}
-                //Verificamos el punto en Y con las Restricciones.
+                //Verificamos o ponto em Y com as restrições.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
@@ -372,12 +348,12 @@ class GraphicPresentation extends React.Component{
             }   
         };
         const getPointAxFromExpY = ( expY ) => {
-            //Obtenemos el Corte sobre el Eje-Y
+            //Obtemos o Corte sobre o eixo-Y
             let expResultY = Number(expY.solveFor('y'));
             if ( expResultY >= 0 ) {
-                //Generamos el Punto en Y
+                //Geramos o Ponto em Y
                 let point = {x:0,y:expResultY,P:points.length}
-                //Verificamos el punto en Y con las Restricciones.
+                //Verificamos o ponto em Y com as restrições.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
@@ -386,100 +362,98 @@ class GraphicPresentation extends React.Component{
             
         };
         const getPointAxFromExpX = (expX) => {
-            //Obtenemos Cortes sobre el Eje-X
+            //Obtemos o Corte sobre o eixo-X
             let expResultX = Number(expX.solveFor('x'));
             if ( expResultX >= 0 ) {
-                //Generamos el Punto en X
+                //Geramos o Ponto em X
                 let point = {x:expResultX,y:0,P:points.length}
-                //Verificamos el punto en X con las Restricciones.
+                //Verificamos o ponto em X com as restrições.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
                     return point} 
             } 
         }
-        //Funcion que devuelve un punto verificado con una Expresion en X y otra en Y
+        //Função que retorna um ponto verificado com uma expressão em X e outra em Y
         const getPointFromExpXExpY = ( expX,expY ) => {
             let xRes = Number(expX.solveFor('x'));
             let yRes = Number(expY.solveFor('y'));
-            //Verificamos que no se corten en algun otro cuadrante que no sea el de analisis.
+            //Verificamos que eles não são cortados em nenhum outro quadrante além do quadrante de análise.
             if ( xRes >= 0  && yRes >= 0 ) {
-                //Generamos el Punto.
+                //Geramos o ponto.
                 let point = {x:xRes,y:yRes,P:points.length}
-                //Verificamos el Punto.
+                //Verificamos o ponto.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
                     return point} 
             }
         };
-        //Funcion que devuelve un punto verificado con una Expresion Completa y otra en Y
+        //Função que retorna um ponto verificado com uma Expressão Completa e outro em Y
         const getPointFromExpCExpY = ( expC,expY ) => {
-            // console.log('EXP C y Recta Y');
             let expResultY = Number(expY.solveFor('y'));
             let expResultX = Number((new Equation(expC.solveFor('y'),expY.solveFor('y'))).solveFor('x'));
-            //Verificamos que no se corten en algun otro cuadrante que no sea el de analisis.
+            //Verificamos que eles não são cortados em nenhum outro quadrante além do quadrante de análise.
             if ( expResultX >= 0  && expResultY >= 0 ) {
-                //Generamos el Punto.
+                //Geramos o ponto.
                 let point = {x:expResultX,y:expResultY,P:points.length}
-                //Verificamos el Punto.
+                //Verificamos o ponto.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
                     return point} 
             }
         };
-        //Funcion que devuelve un punto verificado con una Expresion Completa y otra en X
+        //Função que retorna um ponto verificado com uma Expressão Completa em x e outro em Y
         const getPointFromExpCExpX = ( expC,expX ) => {
-            // console.log('EXP C y Recta X');
             let expResultX = Number(expX.solveFor('x'));
             let expResultY = Number((new Equation(expC.solveFor('x'),expX.solveFor('x'))).solveFor('y'));
-            //Verificamos que no se corten en algun otro cuadrante que no sea el de analisis.
+            //Verificamos que eles não são cortados em nenhum outro quadrante além do quadrante de análise.
             if ( expResultX >= 0  && expResultY >= 0 ) {
-                //Generamos el Punto.
+                //Geramos o ponto.
                 let point = {x:expResultX,y:expResultY,P:points.length}
-                //Verificamos el Punto.
+                //Verificamos o ponto.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
                     return point}
             } 
         };
-        //Funcion que devuelve un punto verificado con dos Expresion Completas.
+        //Função que devolve um ponto verificado com duas Expressões Completas.
         const getPointFromTwoExpC = (exp1,exp2) => {
             let expResultX = Number((new Equation(exp1.restriEquation.solveFor('y'),exp2.restriEquation.solveFor('y'))).solveFor('x'));
             let expResultY = Number((new Equation(exp1.restriEquation.solveFor('x'),exp2.restriEquation.solveFor('x'))).solveFor('y'));
-            //Verificamos que no se corten en algun otro cuadrante que no sea el de analisis.
+            //Verificamos que eles não são cortados em nenhum outro quadrante além do quadrante de análise.
             if ( expResultX >= 0  && expResultY >= 0 ) {
-                //Generamos el Punto.
+                //Geramos o ponto.
                 let point = {x:expResultX,y:expResultY,P:points.length}
-                //Verificamos el Punto.
+                //Verificamos o ponto.
                 if (verifyPoint(point,restricciones,points)){
                     point.x=point.x.toFixed(2)
                     point.y=point.y.toFixed(2)
                     return point}
                 } 
         };
-        //Funcion que devuelve Un punto de Dos Expresiones
+        //Função que devolve Um ponto de Duas expressões
         const getPointFromTwoExp = (exp1,exp2) => {
             try {
-                //Verificamos los Tipos
+                //Verificamos os Tipos
                 if ( exp1.tipo === 2 && exp2.tipo === 2 ) {
-                    //Caso de que son dos rectas Completas
+                    //Caso sejam duas linhas completas
                     return getPointFromTwoExpC(exp1,exp2)  
                 }else if( exp1.tipo === 2){
-                    //La primera es Recta completa y la otra o solo de X o solo de Y
+                    //O primeiro é uma linha reta completa e o outro é apenas X ou apenas Y
                     if( exp2.tipo === 0) { return getPointFromExpCExpX(exp1.restriEquation,exp2.restriEquation) 
                     }else return getPointFromExpCExpY(exp1.restriEquation,exp2.restriEquation)
                 }else if( exp2.tipo === 2 ){
-                    //La seguna es la Recta completa entonces la otra es o solo de X o solo de Y
+                    //O segundo é o Straight completo, de modo que o outro é apenas X ou Y
                     if( exp1.tipo === 0) { return getPointFromExpCExpX(exp2.restriEquation,exp1.restriEquation)
                     }else return getPointFromExpCExpY(exp2.restriEquation,exp1.restriEquation)
                 }else if (exp1.tipo === 0){
-                    //Si la primera es una recta Solo de X y la otra puede ser de Y
+                    //Se o primeiro é uma linha Solo de X e o outro pode ser de Y
                     if( exp2.tipo === 1) { return getPointFromExpXExpY(exp1.restriEquation,exp2.restriEquation) }
                 }else{
-                    //Si la Primera es una recta solo de Y y la otra puede ser de X
+                    //Se o primeiro for uma linha apenas de Y e o outro puder ser de X
                     if( exp2.tipo === 0) { return getPointFromExpXExpY(exp2.restriEquation,exp1.restriEquation) }
                 }  
             } catch (error) {
@@ -488,38 +462,38 @@ class GraphicPresentation extends React.Component{
             
         };
         
-        //Limpiamos nuestro array de Puntos
+        //Limpamos nosso array de pontos
         let points = [];
         
-        //El primer punto que obtenemos es el Optimo, ya que deseamos que no se repita.
+        //O primeiro ponto que obtemos é o ótimo, pois queremos que não seja repetido.
         if ( Object.entries(solSet).length ){ points.push(this.getOptimPoint(solSet)) }
         
 
-        //Analizamos las Rectas que cortan en los Ejes o Rectas sin pendiente.
+        //Analisamos as linhas retas que cortam os eixos ou as linhas retas sem pendentes.
         expresiones.forEach( exp => {
             if (exp.tipo === 2) {
-                //Si es Completa Corta en los dos Ejes
+                //Se pe completa corta nos dois eixos
                 let pointX = getPointAxFromExpCenX(exp.restriEquation);
                 if (pointX) { points.push(pointX) }
                 let pointY = getPointAxFromExpCenY(exp.restriEquation)
                 if (pointY) { points.push(pointY) }
             }else if(exp.tipo === 0){
-                //Solo Corta en X
+                //Corta apenas em X
                 let point = getPointAxFromExpX(exp.restriEquation);
                 if (point) { points.push(point) }
 
             }else{
-                //Solo corta en Y
+                //Corta apenas em Y
                 let point = getPointAxFromExpY(exp.restriEquation);
                 if (point) { points.push(point) }
             }
         })
 
-        //Analizamos los cortes de las Rectas de Restricciones.
+        //Analisamos os cortes das linhas de restrição.
         expresiones.forEach( exp1 => {
-            //Validamos cada unas de las Rectas con las demas.
+            //Nós validamos cada uma das linhas retas com as outras.
             expresiones.forEach( exp2 => {
-                //Verificamos que no sea la misma recta.
+                //Verificamos que não é a mesma linha.
                 if( exp1 !== exp2 ) {
                     let point = getPointFromTwoExp(exp1,exp2);
                     if (point) {points.push(point)}
@@ -527,18 +501,16 @@ class GraphicPresentation extends React.Component{
             })
         });
 
-        //Obtenemos la secuencia de puntos que define nuestro Convexo.
+        //Obtemos a sequência de pontos que define nosso Convexo.
         let convexPoints = getAreaPointsForConvex(points);
-        // console.log('Puntos:');
-        // console.log(convexPoints);
-        //Debemos eliminar el punto optimo para que no se imprima en las marcas simples.
+        //Precisamos eliminar o ponto ideal para que ele não imprima nas marcas simples.
         if( Object.entries(solSet).length ){ points.shift() }
         return {points,convexPoints}
     }
 
-    //Funcion que se encarga de devolverme la tabla.
+    //Função responsável por retornar a tabela.
     getTableResult = (points,coeficientes,restricciones) =>{
-        console.log('Drawing Table Results');    
+        console.log('Desenhando a tabela de resultados');    
         const calcSlacksValue = point => {
             return restricciones.map( restri => <td key={'S-C-'+point.P+'-'+restri.ri}>{(Math.abs(restri.coeficientes[0]*point.x+restri.coeficientes[1]*point.y - restri.derecha)).toFixed(2)}</td>)
         }
@@ -551,10 +523,10 @@ class GraphicPresentation extends React.Component{
     }
        
      
-    //Funcion que encarga de ocultar la descripcion del punto.  
+    //Função responsável por ocultar a descrição do ponto.  
     hidePoint = () => this.setState({value: null})
 
-    //Funcion que se encarga de mostrar la descripcion del punto.
+    //Função responsável por exibir a descrição do ponto.
     showPoint = value => this.setState({ value })
 
 
@@ -576,7 +548,7 @@ class GraphicPresentation extends React.Component{
                         <Col className="text-left"><CardTitle><h4>Grafico:</h4></CardTitle></Col>
                         <Col><Button outline size='sm'
                             onClick={() => this.setState({areaGraph:!this.state.areaGraph})} 
-                            color={!this.state.areaGraph ? 'success':'danger'}>{!this.state.areaGraph ? 'Ver Sombra de Restricciones':'Ocultar Sombra de Restricciones'}</Button>
+                            color={!this.state.areaGraph ? 'success':'danger'}>{!this.state.areaGraph ? 'Ver sombra de restrições':'Ocultar sombra de restrições'}</Button>
                         </Col>
                     </Row>
                 </CardHeader>
@@ -585,8 +557,8 @@ class GraphicPresentation extends React.Component{
                         <XYPlot onMouseLeave={() => this.setState({pointer: null})} width={500} height={500}>
                             <HorizontalGridLines/>
                             <VerticalGridLines/>
-                            <XAxis title='Variable X0' />
-                            <YAxis  title='Variable X1'/>
+                            <XAxis title='Variable X1' />
+                            <YAxis  title='Variable X2'/>
 
                             {areaGraph && this.mapperAreaSeries(lines,referencias)}
                             

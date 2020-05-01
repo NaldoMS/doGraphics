@@ -8,7 +8,7 @@ const Variable = props => {
         <InputGroup className="mt-1" id={"XTT" + xi} key={"VTD" + xi}>
         <InputGroupAddon addonType="prepend">
           <InputGroupText name="xi" id="variable">
-            {"X" + xi}
+            {"X" + (xi+1)}
           </InputGroupText>
         </InputGroupAddon>
         <Input
@@ -20,7 +20,7 @@ const Variable = props => {
           value={descripcion}
         />
         <UncontrolledPopover flip={false} trigger="focus hover" placement="auto" target={"XTT" + xi}>
-          <PopoverBody>Aquí debes ingresar qué representa la variable en el modelo.</PopoverBody>
+          <PopoverBody>Aqui deve inserir a descrição das variáveis que representam o modelo.</PopoverBody>
         </UncontrolledPopover>
       </InputGroup>)
     

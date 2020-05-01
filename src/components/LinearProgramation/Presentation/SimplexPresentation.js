@@ -17,7 +17,7 @@ class SimplexPresentation extends React.Component{
             <tr key={'TdeV'+variableId+'R'+restri.ri}><td>{'R'+restri.ri}</td><td>{cantUsoVar*restri.coeficientes[variableId]}</td>
             <td>{restri.derecha-(cantUsoVar*restri.coeficientes[variableId])}</td></tr>)
         return(<Table size='sm' responsive>
-            <thead><tr><th>Recurso</th><th>Usado</th><th>Diferencia</th></tr></thead>
+            <thead><tr><th>Recurso</th><th>Usado</th><th>Diferença</th></tr></thead>
             <tbody>{tableBody}</tbody>
         </Table>)
 
@@ -46,12 +46,12 @@ class SimplexPresentation extends React.Component{
         //Processamos a INFO
 
         //Primeiro elemento da tabela, o ótimo.
-        tableResult.push({name:'Optimo',item:'',value:result.evaluation});
+        tableResult.push({name:'Ótimo',item:'',value:result.evaluation});
         //Processamos todos os elementos a serem produzidos (conjunto de resultados)
-        resultSetArray.forEach( ([key,value]) => tableResult.push({name:'Producir',item:'X'+key, value}) )
+        resultSetArray.forEach( ([key,value]) => tableResult.push({name:'Produzir',item:'X'+key, value}) )
         //Processamos o uso de recursos, ou seja, os elementos extras da Linha de Resultados (Matriz)
         if (resultSetArray.length < matrix.length-1) {
-            console.log('hola');
+            console.log('Olá');
         }
 
         //Processamos os custos de oportunidade e os valores marginais
@@ -65,7 +65,7 @@ class SimplexPresentation extends React.Component{
                         item.item = 'R'+indexByCol[indCol+1];
                         item.value = Math.abs(col);
                     }else{
-                        item.name = 'Costo de Oportunidad';
+                        item.name = 'Custo de oportunidade';
                         item.item = 'X'+variablesList[indexByCol[indCol+1]].id;
                         item.value = Math.abs(col);
                     }

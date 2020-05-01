@@ -9,7 +9,7 @@ const Restriction = props => {
         <InputGroup className="mt-1" id={"TTR" + ri} key={"RTD" + ri}>
 
         <InputGroupAddon addonType="prepend">
-          <InputGroupText name="ri" id="restriccion">{"R" + ri}</InputGroupText>
+          <InputGroupText name="ri" id="restriccion">{"R" + (ri+1)}</InputGroupText>
         </InputGroupAddon>
 
         <Input

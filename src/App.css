@@ -1,9 +1,9 @@
 .App {
   text-align: center;
-  background: #24C6DC;
-  background: -webkit-linear-gradient(to right, #514A9D, #24C6DC);
-  background: linear-gradient(to right, #514A9D, #24C6DC);
+  background: #fff;
   height: auto;
+  padding-right: 0px!important;
+  padding-left: 0px!important;
 }
 
 .InputCoeficiente {
@@ -32,6 +32,75 @@ td.btnSize {width:60px}
 
 .App-link {
   color: #61dafb;
+}
+
+.Navbar{
+  align-items: center;
+}
+
+.LogoMenu{
+  width: 70px;
+  height: 70px;
+}
+
+.Menu{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  background-color: #007f83;
+}
+
+.Nav-Item{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.Pmenu{
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-size: 18px;
+  color: #fff;
+}
+
+.Linha{
+  margin-right: 0px!important;
+  margin-left: 0px!important;
+}
+
+.DropA{
+  color: #fff;
+}
+
+.DropA:hover{
+  color: #fff;
+}
+
+.LinkDrop{
+  color: #007f83;
+  text-decoration: none;
+}
+
+.LinkDrop:hover{
+  color: #007f83;
+  text-decoration: none;
+}
+
+.Jumbo {
+  padding: 2rem!important;
+}
+
+.LogoDg{
+  width: 150px;
+}
+
+.LogoFb{
+  width: 200px;
+}
+
+.Logos{
+  display: flex;
+  align-items: center;
 }
 
 @keyframes App-logo-spin {

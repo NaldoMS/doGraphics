@@ -25,7 +25,6 @@ let convertAppToModelForSolverPrimal = datosApp => {
     let newVari = {};
     newVari.coeficiente = vari.coeficiente;
     restricciones.forEach(restri => (newVari["r" + restri.ri] = restri.coeficientes[vari.xi]));
-    // console.log(newVari);
     model.variables[vari.xi] = newVari;
   });
   //Tratamos as restrições
@@ -53,7 +52,7 @@ class Presentation extends React.Component {
   componentDidMount() {
     let result = false ;
     if ( this.validateCoeficientes(this.props) ){
-      console.log('Validado..');
+      console.log('Validando..');
       result = this.calculateResults();
     }
     console.log(result);
@@ -64,7 +63,7 @@ class Presentation extends React.Component {
     if (this.props !== futureProps) {
       let result = false ;
       if ( this.validateCoeficientes(futureProps) ){
-        console.log('Validado..');
+        console.log('Validando..');
         result = this.calculateResults();
       }
       console.log(result);
@@ -98,7 +97,7 @@ class Presentation extends React.Component {
     //Obtemos o resultado fornecido
     let { result } = this.state;
     let printResults;
-    console.log('Factible?:'+result.feasible);
+    console.log('Factível?:'+result.feasible);
     if ( result.feasible ) {
       //Obtemos as variáveis do props
       let { variables, restricciones, method } = this.props.status;

@@ -23,16 +23,16 @@ const Variables = props => {
     const handleNewsVar = () => {
         if (method === "simplex") {
             if( variables.length < 20 ){
-                //Si el metodo es Simplex, se permite agregar más de dos variables.
+                //Se o método é Simplex, pode-se colocar mais de duas variáveis.
                 let counterWitheVar = variables.filter(element => element.descripcion.length === 0).length;
-                //Si la cantidad de Variables Libres es igual a 0 se agrega una más.
+                //Se a quiantidade de variáveis livre é igual a 0, coloca-se uma a mais.
                 if (counterWitheVar === 0) {
                 variables.push({ xi: variables.length, descripcion: "", coeficiente: "" });
-                props.handleVariables(variables);
+                 props.handleVariables(variables);
                 }
             }
         } else {
-        //Si no lo es, aseguramos que existan solo dos, entonces eliminamos lo que está de más.
+        //Se não, asseguramos que existam apenas duas, então eliminamos a que está a mais.
             if (variables.length > 2) {
                 variables.splice(2);
                 props.handleVariables(variables);

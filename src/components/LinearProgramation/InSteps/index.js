@@ -5,7 +5,7 @@ import ReactWizard from "react-bootstrap-wizard";
 import Configuration from "../Configuration";
 import Processing from "../Processing";
 import Presentation from "../Presentation";
-import logo from "../logo.svg";
+import Header from '../../header.js';
 
 class InSteps extends React.Component {
   constructor(props) {
@@ -23,25 +23,25 @@ class InSteps extends React.Component {
       modelsOpen:false
     };
   }
-  //Esta función maneja el cambio en las restricciones
+  //Esta função opera a troca de restrições
   handleRestricciones = restricciones => {
     let { model } = this.state;
     model.restricciones = restricciones;
     this.setState({ model, result: false });
   };
-  //Esta función maneja el cambio en las variables
+  //Esta função opera a troca de variáveis
   handleVariables = variables => {
     let { model } = this.state;
     model.variables = variables;
     this.setState({ model, result: false });
   };
-  //Esta función maneja el cambio del metodo
+  //Esta função opera a troca de método
   handleMethod = method => {
     let { model } = this.state;
     model.method = method;
     this.setState({ model, result: false });
   };
-  //Esta función maneja el cambio del objetivo de optimización
+  //Esta função opera a troca de objetivo de otimização
   handleObjective = objective => {
     let { model } = this.state;
     model.objective = objective;
@@ -53,10 +53,10 @@ class InSteps extends React.Component {
     this.setState({ model, result: false });
 
   }
-  //Esta función guarda el resultado (inutilizada por el momento)
+  //Esta função guarda o resultado (inutilizada no momento)
   handleResult = result => this.setState({ result });
 
-  //Esta función habilita el cálculo en el último paso
+  //Esta função habilita o cálculo no último passo
   lastStep = step => {
     if (step === 2) {
       this.setState({ barProg: 100 });
@@ -114,14 +114,9 @@ class InSteps extends React.Component {
     ];
     return (
       <Container fluid className="App">
-        <Row className="">
-          <Col xs={12} md={6} className="mx-auto">
-            <img src={logo} className="App-logo" alt="logo" height="200" />
-            <Progress animated color="blue" value={this.state.barProg} />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={6} className="my-4 mx-auto">
+      <Header/>
+        <Row className="Linha">
+          <Col xs={12} md={10} className="my-4 mx-auto">
             <ReactWizard
               steps={steps}
               title="Programação Linear"

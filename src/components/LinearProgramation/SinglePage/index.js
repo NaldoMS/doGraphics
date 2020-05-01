@@ -4,7 +4,7 @@ import ModalModels from "../../Models"
 import Configuration from "../Configuration";
 import Processing from "../Processing";
 import Presentation from "../Presentation";
-import logo from "../logo.svg";
+import Header from '../../header.js';
 
 class SinglePage extends React.Component {
   constructor(props) {
@@ -69,14 +69,10 @@ class SinglePage extends React.Component {
     
     return (
       <Container fluid className="App">
-        <Row className="">
-          <Col xs={12} md={6} className="mx-auto">
-            <img src={logo} className="App-logo" alt="logo" height="200" />
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12} md={6} className="my-4 mx-auto ">
-            <Row>
+      <Header/>
+        <Row className="Linha">
+            <Col xs={12} md={10} className="mx-auto my-4">
+            <Row className="Linha">
                 <Jumbotron className='w-100'>
                     <Configuration   status={model}
                     handleMethod={this.handleMethod}

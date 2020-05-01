@@ -10,7 +10,7 @@ class Configuration extends React.Component {
     this.state = { faltaDescrip: "" };
   }
 
-  //Función que permite validar si se ingresaron todos los cambios correspondientes en la etapa
+  //Função que permite validar se ingressaram todos as trocas correspondentes na etapa
   isValidated() {
     let { variables, restricciones } = this.props.status;
     let variablesDescriptionsMin = variables.filter(va => va.descripcion !== "");
@@ -27,17 +27,17 @@ class Configuration extends React.Component {
     return false;
   }
   
-  //Funcion que se encarga de traspasar los cambios al padre
+  //Função que se encarrega de trasnferir as trocas ao pai
   handleRestrictions = restricciones => this.props.handleRestricciones(restricciones)
   
-  //Funcion que se encarga de traspasar los cambios al padre
+  //Função que se encarrega de trasnferir as trocas ao pai
   handleVariables = variables => this.props.handleVariables(variables)
   
   //Modelos
   showModels = () => this.props.showModels()
 
   render() {
-    //Obtenemos de las props, las varaibles y restricciones.
+    //Obtemos das propriedades, as variáveis e restrições.
     let {variables,restricciones,method } = this.props.status;
 
     let buttonsMethods = (
@@ -88,7 +88,7 @@ class Configuration extends React.Component {
               <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardInteger">
                 <PopoverBody>Esta função ativa ou desativa a Programação Linear Inteira.</PopoverBody>
               </UncontrolledPopover>
-              <Card outline color="secondary" id="CardInteger" className="mt-2 mx-auto">
+              <Card outline color="secondary" id="CardInteger" className="mt-3 mx-auto">
                 <CardHeader>Programação Inteira</CardHeader>
                 <CardBody>
                   <Button
@@ -101,8 +101,7 @@ class Configuration extends React.Component {
                 </CardBody>
               </Card>
             </Col>
-          </Row>
-          <Row>
+
             <Col>
               <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardUtil">
                 <PopoverBody>
@@ -127,6 +126,7 @@ class Configuration extends React.Component {
                 <CardBody>{buttonsOptType}</CardBody>
               </Card>
             </Col>
+
           </Row>
           <Row>
             <UncontrolledPopover flip={false} trigger="hover" placement="top" target="CardVariables">
