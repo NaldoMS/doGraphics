@@ -62,7 +62,7 @@ const Header = () =>{
                 </UncontrolledDropdown>
 
                 <NavItem className="Nav-Item">
-                    <Link to={"/Evaluate"}>
+                    <Link to={"/Evaluete"}>
                         <p className="Pmenu">Avaliar</p>
                     </Link>
                 </NavItem>
