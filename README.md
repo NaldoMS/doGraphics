@@ -1,4 +1,4 @@
-# doGraphics - FERRAMENTA DE ENSINO WEB PARA RESOLUÇÃO GRÁFICA EM PESQUISA OPERACIONAL
+# doGraphics - Ferramenta web para resolução gráfica em pesquisa operacional 
 
 Trabalho de Conclusão de Curso - Centro Universitário Farias Brito - 2020
 
