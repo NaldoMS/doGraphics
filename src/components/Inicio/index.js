@@ -29,7 +29,7 @@ const Inicio = () =>{
                         </Col>
                     </Row>
                     <Row>
-                        <h2 className="mx-auto">Bem vindo ao doGraphics!</h2>
+                        <h2 className="mx-auto">TESTE Bem vindo ao doGraphics!</h2>
                     </Row>
                     <Row className="mt-12">
                         <p>Lorem Ipsum is simply dummy text of the printing and 
